@@ -7,8 +7,8 @@ public class PuyoMove : MonoBehaviour
    // private float previousTime;
   //  public float fallTime = 5f;
 
-    public static  int width = 6, height = 12;
-    public static Transform[,] grid = new Transform[width, height];
+    public static  int width = 6, height = 13;
+    public static GameObject[,] grid = new GameObject[width, height];
     // Start is called before the first frame update
     void Start()
     {
@@ -40,8 +40,11 @@ public class PuyoMove : MonoBehaviour
             if (!ValidMove())
             {
                 transform.position -= new Vector3(0, -1, 0);
-                this.enabled = false;
                 AddGrid();
+                this.gameObject.transform.DetachChildren();
+                Destroy(this.gameObject);
+                this.enabled = false;
+                
                 FindObjectOfType<GameManager>().CreatePuyos();
             }
         } else if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -56,7 +59,7 @@ public class PuyoMove : MonoBehaviour
 
     void AddGrid()
     {
-        foreach (Transform childblocks in transform)
+        foreach (GameObject childblocks in transform)
         {
             int roundX = Mathf.RoundToInt(childblocks.transform.position.x);
             int roundY = Mathf.RoundToInt(childblocks.transform.position.y);
@@ -78,7 +81,7 @@ public class PuyoMove : MonoBehaviour
                 return false;
             }
 
-            if(grid[roundX,roundX] != null)
+            if(grid[roundX,roundY] != null)
             {
                 return false;
             }
