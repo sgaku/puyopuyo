@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+
 
 public class GameManager : MonoBehaviour
 {
@@ -8,29 +11,25 @@ public class GameManager : MonoBehaviour
     public GameObject Twin;
     GameObject currentpuyos;
     List<GameObject> checkedpuyos = new List<GameObject>();
+
+    public static  int score;
+    public Text scoreText;
+    public Text highScoreText;
+
+    private void Awake()
+    {
+        score = 0;
+        PlayerPrefs.DeleteKey("Score");
+        highScoreText.text = "HighScore:" + PlayerPrefs.GetInt("HighScore", 0).ToString();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         CreatePuyos();
-      // Array();
-   
-      // StartCoroutine("DeletePuyo");
     }
 
-   void Array()
-    {
-        for(int x = 0; x < 6; x++)
-        {
-            for (int y = 0; y < 10; y++)
-            {
-               
-                GameObject piece = Instantiate(puyos[Random.Range(0, puyos.Length)]);
-                piece.transform.position = new Vector3(x, y, 0);
-                PuyoMove.grid[x, y] = piece;                
-
-            }
-        }
-    }
+  
 
     // Update is called once per frame
     void Update()
@@ -38,6 +37,7 @@ public class GameManager : MonoBehaviour
         
     }
 
+    //何個繋がっているかを確認
     int Linkcount(int x,int y,int linkCount)
     {
         if ( PuyoMove.grid[x,y]==null || checkedpuyos.Contains(PuyoMove.grid[x, y]))
@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
         return linkCount;
     }
 
+    //４個以上繋がりがあるならtrue
     bool HasLink()
     {
         for (int x = 0; x < 6; x++)
@@ -95,6 +96,7 @@ public class GameManager : MonoBehaviour
                 if(Linkcount(x,y,0) >= 4 && PuyoMove.grid[x,y]!=null)
                 {
                     Destroy(PuyoMove.grid[x, y]);
+                    AddScore();
                 }
 
 
@@ -104,9 +106,10 @@ public class GameManager : MonoBehaviour
         DropPuyo();
     }
 
- public   void DropPuyo()
+ public  void DropPuyo()
     {
-       
+
+
         int nullCount = 0;
         for (int x = 0; x < 6; x++)
         {
@@ -149,4 +152,13 @@ public class GameManager : MonoBehaviour
         GameObject puyo2 = Instantiate(puyos[Random.Range(0, puyos.Length)], new Vector3(2,12,0), Quaternion.identity);
         puyo2.transform.SetParent(currentpuyos.transform, true);
     }
+
+    void AddScore()
+    {
+        score += 100;
+        scoreText.text = "Score:" + score.ToString();
+        PlayerPrefs.SetInt("Score", score);
+    }
+
+    
 }
