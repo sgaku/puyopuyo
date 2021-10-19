@@ -70,10 +70,15 @@ public class PuyoMove : MonoBehaviour
             int roundY = Mathf.RoundToInt(childblocks.transform.position.y);
 
             grid[roundX, roundY] = childblocks.gameObject;
+
+            if(roundY > 11)
+            {
+               FindObjectOfType<GameOver>().showGameOver();
+         }
         }
     }
 
-
+    //影のぷよを作成
     void CreatGhostPuyos()
     {
         ghostpuyos = Instantiate(this.gameObject);
@@ -85,7 +90,7 @@ public class PuyoMove : MonoBehaviour
             children.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         }
     }
-
+    //影ぷよの動き
     void MoveGhost()
     {
         ghostpuyos.transform.position = this.gameObject.transform.position;
@@ -100,6 +105,7 @@ public class PuyoMove : MonoBehaviour
             ghostpuyos.transform.position += new Vector3(0, 1, 0);
         }
     }
+
     bool ValidMoveGhost()
     {
         foreach (Transform childblocks in ghostpuyos.transform)
