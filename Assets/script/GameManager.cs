@@ -12,9 +12,9 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         CreatePuyos();
-        Array();
+      // Array();
    
-       StartCoroutine("DeletePuyo");
+      // StartCoroutine("DeletePuyo");
     }
 
    void Array()
@@ -65,9 +65,27 @@ public class GameManager : MonoBehaviour
         return linkCount;
     }
 
+    bool HasLink()
+    {
+        for (int x = 0; x < 6; x++)
+        {
+            for (int y = 0; y < 13; y++)
+            {
+                checkedpuyos.Clear();
+                if (Linkcount(x, y, 0) >= 4 && PuyoMove.grid[x, y] != null)
+                {
+                    return true;
+                }
+
+
+            }
+        }
+        return false;
+    }
+
     IEnumerator DeletePuyo()
     {
-        Debug.Log("delete");
+        
         yield return new WaitForSeconds(0.5f);
         for (int x = 0; x < 6; x++)
         {
@@ -86,9 +104,9 @@ public class GameManager : MonoBehaviour
         DropPuyo();
     }
 
-    void DropPuyo()
+ public   void DropPuyo()
     {
-        Debug.Log("drop");
+       
         int nullCount = 0;
         for (int x = 0; x < 6; x++)
         {
@@ -99,17 +117,26 @@ public class GameManager : MonoBehaviour
                 {
                      nullCount++;
                 }
-                 if (nullCount > 0)
+            else     if (nullCount > 0)
                 {
                     PuyoMove.grid[x, y].transform.position += new Vector3(0, -nullCount, 0);
                     PuyoMove.grid[x, y-nullCount] = PuyoMove.grid[x, y];
                     PuyoMove.grid[x, y] = null;
           
                 }
-                nullCount = 0;
+               
             }
+            nullCount = 0;
         }
-        StartCoroutine("DeletePuyo");
+
+        if (HasLink())
+        {
+            StartCoroutine("DeletePuyo");
+        }
+        else if (!HasLink())
+        {
+            CreatePuyos();
+        }
     }
 
   public  void CreatePuyos()
