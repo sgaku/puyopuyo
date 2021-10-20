@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour
 
     void AddScore()
     {
-        score += 100;
+        score += 10;
         scoreText.text = "Score:" + score.ToString();
         PlayerPrefs.SetInt("Score", score);
     }

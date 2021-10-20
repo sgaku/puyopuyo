@@ -37,7 +37,7 @@ public class PuyoMove : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - previousTime >0.6)
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Time.time - previousTime >0.4)
         {
             transform.position += new Vector3(0, -1, 0);
             if (!ValidMove())
@@ -78,7 +78,7 @@ public class PuyoMove : MonoBehaviour
         }
     }
 
-    //影のぷよを作成
+    
     void CreatGhostPuyos()
     {
         ghostpuyos = Instantiate(this.gameObject);
@@ -90,7 +90,7 @@ public class PuyoMove : MonoBehaviour
             children.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         }
     }
-    //影ぷよの動き
+   
     void MoveGhost()
     {
         ghostpuyos.transform.position = this.gameObject.transform.position;
